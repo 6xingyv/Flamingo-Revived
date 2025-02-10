@@ -524,22 +524,14 @@ class MainActivity : BaseActivity() {
                                                     )
                                                     .drawWithCache {
                                                         onDrawWithContent {
-                                                            val colors = listOf(
-                                                                Color.Transparent,
-                                                                color.copy(alpha = 0.3f),
-                                                                color.copy(alpha = 0.6f),
-                                                                color,
-                                                                color,
-                                                                color,
-                                                                color,
-                                                                color
-                                                            )
-
                                                             drawContent()
 
                                                             drawRect(
                                                                 brush = Brush.verticalGradient(
-                                                                    colors
+                                                                    0f to Color.Transparent,
+                                                                    0.125f to color.copy(alpha = 0.3f),
+                                                                    0.35f to color.copy(alpha = 0.6f),
+                                                                    0.475f to color
                                                                 ),
                                                                 blendMode = BlendMode.DstIn
                                                             )
@@ -554,16 +546,10 @@ class MainActivity : BaseActivity() {
                                                     .navigationBarsHeight(128.dp)
                                                     .background(
                                                         brush = Brush.verticalGradient(
-                                                            colors = listOf(
-                                                                Color.Transparent,
-                                                                color.copy(alpha = 0.3f),
-                                                                color.copy(alpha = 0.6f),
-                                                                color,
-                                                                color,
-                                                                color,
-                                                                color,
-                                                                color
-                                                            ),
+                                                            0f to Color.Transparent,
+                                                            0.125f to color.copy(alpha = 0.3f),
+                                                            0.35f to color.copy(alpha = 0.6f),
+                                                            0.475f to color,
                                                             startY = 0f,
                                                             endY = Float.POSITIVE_INFINITY
                                                         )
