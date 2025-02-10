@@ -39,7 +39,6 @@ import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.draggable
 import androidx.compose.foundation.gestures.rememberDraggableState
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -118,7 +117,6 @@ import yos.music.player.data.models.MainViewModel
 import yos.music.player.data.models.MediaViewModel
 import yos.music.player.data.objects.MediaViewModelObject
 import yos.music.player.ui.UI
-import yos.music.player.ui.UI.Settings.Companion.ExoplayerSetting
 import yos.music.player.ui.pages.HomeNav
 import yos.music.player.ui.pages.NowPlaying
 import yos.music.player.ui.pages.NowPlayingPage.Album
@@ -160,7 +158,6 @@ class MainActivity : BaseActivity() {
 
     private val imageViewModel: ImageViewModel by viewModels()
 
-    @Suppress("DEPRECATION")
     @OptIn(
         ExperimentalAnimationApi::class,
         ExperimentalHazeMaterialsApi::class, ExperimentalSharedTransitionApi::class
@@ -277,12 +274,10 @@ class MainActivity : BaseActivity() {
                                         navigationBarContrastEnforced = false
                                     )
                                     setStatusBarColor(Color.Transparent, darkIcons = false)
-                                    var activity = LocalContext.current as? Activity
                                     DisposableEffect(Unit) {
-                                        activity?.window?.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+                                        addKeepScreenOnPermission()
                                         onDispose {
-                                            activity?.window?.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-                                            activity = null
+                                            removeKeepScreenOnPermission()
                                         }
                                     }
                                 }
@@ -473,7 +468,7 @@ class MainActivity : BaseActivity() {
                                             composable(UI.Settings.LyricGetter) {
                                                 LyricGetter(navController)
                                             }
-                                            composable(ExoplayerSetting) {
+                                            composable(UI.Settings.ExoplayerSetting) {
                                                 ExoPlayerSettings(navController)
                                             }
                                             composable(UI.Settings.About) {
@@ -495,8 +490,6 @@ class MainActivity : BaseActivity() {
                                                 NotificationSetting(navController)
                                             }
                                         }
-
-
                                     }
                                 }
 
@@ -1108,6 +1101,18 @@ class MainActivity : BaseActivity() {
                     loadMusic(context)
                 }
             }
+        }
+    }
+
+    private fun addKeepScreenOnPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        }
+    }
+
+    private fun removeKeepScreenOnPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         }
     }
 
